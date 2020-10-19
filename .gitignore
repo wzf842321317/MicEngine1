@@ -1,0 +1,20 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.so
+*.dylib
+*.log
+*.xlsx
+*.xls
+*.db
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+*.db
+*.db
+data/micengine.db
+.idea/workspace.xml
+models/MachineCode.txt

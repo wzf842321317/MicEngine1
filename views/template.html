@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<!--头部引用连接-->
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>模板页面</title>
+    <link rel="Bookmark" href="../static/img/micloud.ico" /> 
+    <link rel="shortcut icon" href="../static/img/micloud.ico" /> 
+	<link rel="stylesheet" href="../static/bootstrap-4.4.1/css/bootstrap.css">
+	<link rel="stylesheet" href="../static/zTree-v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+</head>
+<body><!--Body部分-->
+
+<!-- 导航栏部分 -->
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+  <!--Logo区域-->
+  <a class="navbar-brand" href="#"><img src="../static/img/micloud.svg" alt= "Logo" style="width:40px;"></a>
+  <!-- 小屏幕时折叠导航栏属性 -->
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <!-- Links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" href="#"><img src="../static/img/menuico/trend.svg" style="width:18px;">监控</a>
+    </li>
+    <li class="nav-item dropdown"><!-- 下拉菜单 -->
+		<a class="nav-link dropdown-toggle  active" data-toggle="dropdown" href="#"><img src="../static/img/menuico/data.svg" style="width:18px;">数据</a>
+		<div class="dropdown-menu">
+		  <a class="dropdown-item" href="#"><img src="../static/img/menuico/photo.svg" style="width:18px;">快照</a>
+		  <a class="dropdown-item" href="#"><img src="../static/img/menuico/history.svg" style="width:18px;">历史</a>
+		</div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#"><img src="../static/img/menuico/analys.svg" style="width:18px;">分析</a>
+    </li>
+	<li class="nav-item">
+      <a class="nav-link" href="#"><img src="../static/img/menuico/report.svg" style="width:18px;">报表</a>
+    </li>
+	<li class="nav-item">
+      <a class="nav-link" href="#"><img src="../static/img/menuico/manager.svg" style="width:18px;">管理</a>
+    </li>
+  </ul>
+  </div>
+  <div class="navbar-text navbar-right btn-group">
+	<a class="btn btn-outline-success" role="button" href="#"><img src="../static/img/menuico/man.svg" style="width:25px;">张三</a>
+	<a class="btn btn-outline-danger" role="button"  href="#"><img src="../static/img/menuico/quit.svg" style="width:25px;">退出</a>
+  </div>
+</nav><!-- /导航栏部分 -->
+<!------页面主体---------------------------------------------------------------------------------------------->	
+<div class="container-fluid" style="margin-top:0px">
+    <div class="row">
+	  <!-- 左侧树形结构 -->
+      <div class="col-sm-3 col-md-6 col-lg-4 col-xl-2 bg-success">
+        <div id="NodeTree" class="ztree"></div>
+      </div><!-- /左侧树形结构 -->
+	  
+	  <!-- 右侧内容窗口 -->
+      <div class="col-sm-9 col-md-6 col-lg-8 col-xl-10 bg-warning">
+        <div id="MsgBox"></div>
+      </div><!-- /右侧内容窗口 -->
+    </div>
+</div><!------/页面主体---------------------------------------------------------------------------------------------->	
+</body><!--/Body部分-->
+    <!--Js文件引用-->
+	<script src="../static/js/jquery-3.4.1.min.js"></script>  
+    <script src="../static/bootstrap-4.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../static/zTree-v3/js/jquery.ztree.core.js"></script>
+<SCRIPT type="text/javascript">
+		function zTreeOnClick(event, treeId, treeNode) {
+		    $("#MsgBox").html(treeNode.id + ", " + treeNode.name);
+		};
+		//树的配置
+		var setting = {
+				//事件回调函数
+				callback:{
+					onClick:zTreeOnClick//用于捕获节点被点击的事件回调函数
+				},
+				//数据格式的设置
+				data:{
+					keep:{//保持默认即可
+						leaf:false,//节点叶子节点属性锁,true / false 分别表示 锁定 / 不锁定.叶子节点属性,如果设置为 true,则所有 isParent = false 的节点,都无法添加子节点
+						parent:false//节点父节点属性锁,rue / false 分别表示 锁定 / 不锁定.如果设置为 true，则所有 isParent = true 的节点，即使该节点的子节点被全部删除或移走，依旧保持父节点状态
+					},
+					key:{//保持默认即可
+						checked:"checked",  //节点数据中保存 check 状态的属性名称。
+						children:"children",//节点数据中保存子节点数据的属性名称。
+						isParent:"isParent",//节点数据保存节点是否为父节点的属性名称
+						isHidden:"isHidden",//点数据保存节点是否隐藏的属性名称
+						name:"name",//节点数据保存节点名称的属性名称
+						title:"",//节点数据保存节点提示信息的属性名称.[setting.view.showTitle = true 时生效],如果设置为 "" ，则自动与 setting.data.key.name 保持一致，避免用户反复设置
+						url:"url"//节点数据保存节点链接的目标 URL 的属性名称
+					},
+					simpleData:{
+						enable:true,  //使用简单的json数据
+						idKey:"id",   //节点数据中保存唯一标识的属性名称
+						pIdKey:"pId", //节点数据中保存其父节点唯一标识的属性名称
+						rootPId:null  //用于修正根节点父节点数据，即 pIdKey 指定的属性值
+					}
+				},
+				//树的显示设置
+				view:{
+					showLine:true, //设置是否显示连线 默认为true
+					showTitle: false,//设置是否显示鼠标悬浮时显示title的效果,请务必与 setting.data.key.title 同时使用。
+					showIcon:true,//是否显示节点的图标
+					dblClickExpand: false,//设置是否支持双击展开树节点
+					fontCss : {color:"blue"},//设置节点样式,例如：{color:"#ff0011", background:"blue"}  
+					expandSpeed: "fast",//设置展开的速度  fast normal  slow 
+					nameIsHTML: true,//名字是否是HTML
+					selectedMulti:true,//设置是否允许同时选中多个节点。
+					textSelectedEnable:false,//设置 zTree 是否允许可以选择 zTree DOM 内的文本。
+					addDiyDom:null,//【高级应用】用于在节点上固定显示用户自定义控件
+					addHoverDom:null,//【高级应用】用于当鼠标移动到节点上时，显示用户自定义控件，显示隐藏状态同 zTree 内部的编辑、删除按钮
+					removeHoverDom:null,//【高级应用】用于当鼠标移出节点时，隐藏用户自定义控件，显示隐藏状态同 zTree 内部的编辑、删除按钮。请务必与 addHoverDom 同时使用
+					autoCancelSelected:true//点击节点时，按下 Ctrl 或 Cmd 键是否允许取消选择操作		
+				}
+		};
+		
+		/**
+		属性说明  
+		id  当前节点的唯一ID
+		pId [I必须大写]  代表当前节点的父节点id
+		name:节点名称
+		open:是否展开当前节点，默认为false
+		isParent:true  标记当前节点是否为父节点 默认为如果当前节点下有子节点 则为true   否则为false
+		icon:节点自定义图标的 URL 路径
+		iconOpen:设置节点展开时的图标地址  此节点必须是父节点 isParent:true
+		iconClose:设置节点收起的的图标地地址  此节点必须是父节点 isParent:true
+		url:点击节点打开的链接地址  如果想使用onClick:zTreeOnClick事件，就不要加url属性 或者改名字 href
+		target:设置打开链接的方式  [在新窗口打开(_blank)，要本窗口打开(_self)]
+		isHidden:判断 treeNode 节点是否被隐藏
+		isParent:记录 treeNode 节点是否为父节点
+		nocheck:设置节点是否隐藏 checkbox / radio [setting.check.enable = true 时有效]
+		*DIY*:用于保存节点的其他自定义数据信息，不要与 zTree 使用的属性相同即可，用户可随意设定
+		
+		checked:节点的 checkBox / radio 的 勾选状态
+		children:[]节点的子节点数据集合
+		chkDisabled:设置节点的 checkbox / radio 是否禁用 [setting.check.enable = true 时有效]
+	    click:最简单的 click 事件操作。相当于 onclick="..." 的内容。 如果操作较复杂，请使用 onClick 事件回调函数
+		getCheckStatus():获取节点 checkbox / radio 半勾选状态。[setting.check.enable = true 时有效]
+		halfCheck:强制节点的 checkBox / radio 的 半勾选状态。[setting.check.enable = true & treeNode.nocheck = false 时有效]
+		getIndex():获取 treeNode 节点在同级节点中的位置。
+		getPreNode():获取与 treeNode 节点相邻的前一个节点
+		getNextNode():获取与 treeNode 节点相邻的后一个节点。
+		getParentNode():获取 treeNode 节点的父节点
+		getPath():获取 treeNode 节点的所有父节点（包括自己）		
+		**/
+		//树的json数据
+		var zNodes =[
+			{ id:1, pId:0, name:"<font color='red'>父节点1 - 展开</font>", open:true},
+			{ id:11, pId:1, name:"父节点11 - 折叠",icon:"resources/zTree/css/zTreeStyle/img/diy/2.png"},
+			{ id:111, pId:11, name:"叶子节点111",target:'_blank',url:'http://www.baidu.com'},
+			{ id:112, pId:11, name:"叶子节点112"},
+			{ id:113, pId:11, name:"叶子节点113"},
+			{ id:114, pId:11, name:"叶子节点114"},
+			{ id:12, pId:1, name:"父节点12 - 折叠",iconOpen:"resources/zTree/css/zTreeStyle/img/diy/1_open.png",iconClose:"resources/zTree/css/zTreeStyle/img/diy/1_close.png"},
+			{ id:121, pId:12, name:"叶子节点121"},
+			{ id:122, pId:12, name:"叶子节点122"},
+			{ id:123, pId:12, name:"叶子节点123"},
+			{ id:124, pId:12, name:"叶子节点124"},
+			{ id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
+			{ id:2, pId:0, name:"父节点2 - 折叠"},
+			{ id:21, pId:2, name:"父节点21 - 展开", open:true},
+			{ id:211, pId:21, name:"叶子节点211"},
+			{ id:212, pId:21, name:"叶子节点212"},
+			{ id:213, pId:21, name:"叶子节点213"},
+			{ id:214, pId:21, name:"叶子节点214"},
+			{ id:22, pId:2, name:"父节点22 - 折叠"},
+			{ id:221, pId:22, name:"叶子节点221"},
+			{ id:222, pId:22, name:"叶子节点222"},
+			{ id:223, pId:22, name:"叶子节点223"},
+			{ id:224, pId:22, name:"叶子节点224"},
+			{ id:23, pId:2, name:"父节点23 - 折叠"},
+			{ id:231, pId:23, name:"叶子节点231"},
+			{ id:231, pId:23, name:"叶子节点232"},
+			{ id:231, pId:23, name:"叶子节点233"},
+			{ id:231, pId:23, name:"叶子节点234"},
+			{ id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
+		];
+		
+		$(document).ready(function(){
+			//初始化zTree
+			$.fn.zTree.init($("#NodeTree"), setting, zNodes);
+		});
+	</SCRIPT>	
+</html>
